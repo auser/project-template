@@ -1,0 +1,32 @@
+[changelog]
+header = """
+# Changelog
+
+All notable changes to this project will be documented in this file.
+"""
+body = """
+{% if version %}## {{ version }}{% else %}## Unreleased{% endif %}{% if timestamp %} - {{ timestamp }}{% endif %}
+{% for group, commits in commits | group_by(attribute="group") %}
+### {{ group }}
+{% for commit in commits %}
+- {{ commit.message | trim }} ({{ commit.id | truncate(length=7, end="") }})
+{% endfor %}
+{% endfor %}
+"""
+footer = ""
+trim = true
+
+[git]
+conventional_commits = true
+filter_unconventional = false
+tag_pattern = "v[0-9].*"
+commit_parsers = [
+  { message = "^feat\\b", group = "Features" },
+  { message = "^fix\\b", group = "Fixes" },
+  { message = "^docs\\b", group = "Documentation" },
+  { message = "^refactor\\b", group = "Refactoring" },
+  { message = "^perf\\b", group = "Performance" },
+  { message = "^test\\b", group = "Tests" },
+  { message = "^chore\\b", group = "Chores" },
+]
+sort_commits = "oldest"

@@ -34,4 +34,3 @@ Then edit:
 Implementation must follow accepted ADRs. Any feature that changes architecture, security, data ownership, runtime behavior, public APIs, or operational guarantees requires an ADR before implementation.
 
 `specs/SPRINT.md` must stay current during active work. Completed sprint items should be moved or summarized into `specs/backlog/` with evidence links.
-# project-template
