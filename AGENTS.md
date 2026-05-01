@@ -28,6 +28,35 @@ Before making changes, always read:
 - ALWAYS prefer explicit contracts over informal conventions.
 - ALWAYS preserve security, auditability, and maintainability guarantees defined by the project.
 
+## Cost-Aware AI Agent Workflow
+
+This repository may be developed with multiple coding agents. Use the least expensive capable tool first, then escalate only when the task requires it.
+
+Recommended agent roles:
+
+- Codex CLI is the default implementation agent.
+- Aider with Ollama is the local or low-cost editing loop for scaffolding, docs, tests, and repetitive changes.
+- OpenCode is the multi-provider fallback for switching providers without changing workflow.
+- Claude Code is reserved for high-value architecture review, hard debugging, security-sensitive reasoning, and final review.
+
+Preferred commands:
+
+```bash
+just codex
+just aider
+just aider-plan
+just opencode
+just claude
+just ci
+```
+
+Agent escalation policy:
+
+1. Use local or lower-cost agents for documentation, scaffolding, boilerplate, test generation, and mechanical refactors.
+2. Use Codex CLI for primary implementation work.
+3. Use Claude Code only when the work benefits from premium reasoning or review.
+4. Always run `just ci` before claiming completion.
+
 ## Architecture Discipline
 
 When proposing or implementing changes:
@@ -147,10 +176,12 @@ Do not let code and architecture docs drift.
 
 1. Read the relevant specs.
 2. Identify the governing ADRs.
-3. Make the smallest change that preserves invariants.
-4. Update tests and docs.
-5. Update `specs/SPRINT.md`.
-6. Summarize which ADRs were followed or changed.
+3. Choose the least expensive capable agent for the task.
+4. Make the smallest change that preserves invariants.
+5. Update tests and docs.
+6. Update `specs/SPRINT.md`.
+7. Run `just ci`.
+8. Summarize which ADRs were followed or changed.
 
 ## Documentation Freshness
 
