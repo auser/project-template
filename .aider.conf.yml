@@ -1,0 +1,10 @@
+model: ollama/qwen2.5-coder:32b
+auto-commits: false
+dirty-commits: false
+show-diffs: true
+watch-files: true
+read:
+  - AGENTS.md
+  - README.md
+  - specs/project.md
+  - specs/SPRINT.md

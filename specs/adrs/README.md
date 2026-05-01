@@ -16,6 +16,7 @@ Every meaningful feature must align to accepted ADRs. If a feature conflicts wit
 | ADR | Title | Status |
 | --- | --- | --- |
 | `0001` | Record Architecture Decisions | accepted |
+| `0002` | Cost-Aware AI Agent Tooling | accepted |
 
 ## Rules
 
