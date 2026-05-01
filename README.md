@@ -12,6 +12,7 @@ This template gives every new project a consistent planning and governance struc
 - `specs/backlog/` records completed work and deferred work referenced by the sprint.
 - `Justfile` provides common commands.
 - `cliff.toml` supports conventional changelog generation with `git-cliff`.
+- `docs/ai-agents.md` describes the cost-aware AI coding workflow.
 
 ## Start a New Project
 
@@ -28,6 +29,42 @@ Then edit:
 3. `specs/SPRINT.md`
 4. `specs/adrs/0001-record-architecture-decisions.md`
 5. `specs/plans/0001-initial-execution-plan.md`
+
+## AI Coding Agent Setup
+
+This template includes a tiered AI coding workflow so Claude Code does not have to be the only implementation path.
+
+Recommended roles:
+
+- Codex CLI: primary implementation agent
+- Aider + Ollama: local or low-cost editing loop
+- OpenCode: multi-provider fallback
+- Claude Code: premium architecture review, hard debugging, and final review
+
+Run once on a development machine:
+
+```sh
+just bootstrap-ai-tools
+```
+
+Run inside a project created from this template:
+
+```sh
+just setup-ai-agents
+```
+
+Daily commands:
+
+```sh
+just codex
+just aider
+just aider-plan
+just opencode
+just claude
+just ci
+```
+
+See `docs/ai-agents.md` for the full workflow.
 
 ## Rules
 
