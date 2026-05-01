@@ -40,6 +40,66 @@ When proposing or implementing changes:
 - prefer boring, testable implementations over magic
 - keep plans, ADRs, and sprint state synchronized with code
 
+## Worktree Workflow for Features
+
+Every feature, refactor, or non-trivial bug fix MUST be developed in a git worktree, never on the main checkout. 
+
+### Creating the worktree
+
+```bash
+git worktree add ../<name>-<feature-slug> -b feat/<feature-slug>
+cd ../<name>-<feature-slug>
+```
+
+Branch names follow the existing pattern (`feat/<slug>`, `fix/<slug>`, `chore/<slug>`).
+
+### Isolating mutable state
+
+Use the `bin/dev` wrapper or the `just dev-*`
+
+Examples:
+
+```bash
+bin/dev template build              # equivalent to: cargo run --quiet -- template build
+just dev-test                       # cargo test --workspace with the dev env
+just dev-clippy                     # cargo clippy with the dev env
+```
+
+The dev env files are committed; new contributors get the right behaviour with no setup.
+
+### Optional: direnv
+
+Users who already have direnv installed can opt in:
+
+```bash
+cp .envrc.example .envrc
+direnv allow
+```
+
+This is a convenience, not a requirement. The wrapper script path (`bin/dev` / `just dev-*`) works for everyone with no additional tools.
+
+### Cleaning up
+
+After the feature merges:
+
+```bash
+git worktree remove ../<name>-<feature-slug>
+```
+
+### When NOT to use a worktree
+
+Trivial single-line changes (typo fixes, doc word swaps, dependency bumps) can land directly on a topic branch in the main checkout. The worktree rule applies to anything that touches code, runtime state, or the registry.
+
+## Definition of Done
+
+No task is complete without tests. Every feature, bug fix, or refactor must include:
+
+1. **Tests first**: Write or update tests covering the new/changed behavior before marking a task done. Unit tests for logic, integration tests for CLI and cross-crate interactions.
+2. **All tests green**: Run `cargo test --workspace` and confirm zero failures. New tests must pass alongside all existing tests.
+3. **Zero clippy warnings/errors**: Run `cargo clippy --workspace -- -D warnings` and fix all findings before calling a feature done. Never suppress a clippy lint with `#[allow(...)]` — fix the underlying issue instead.
+4. **Compiling workspace**: Run `cargo check --workspace` (or full `cargo test`/`cargo build`) and fix any errors before you finish. Never leave the workspace in a non-compiling state.
+5. **Update sprint spec**: After completing any phase, task, or sub-task, update `specs/SPRINT.md` to reflect the current status. Check off completed items (`- [x]`), update phase status labels (e.g. `**Status: COMPLETE**`), and add any new test counts or notes. The sprint spec must always accurately reflect what has been implemented.
+
 ## Code Quality Expectations
 
 If implementation work happens in this repo, default expectations are:
